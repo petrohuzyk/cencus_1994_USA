@@ -9,6 +9,7 @@ Used features: ```['age', 'workclass', 'education', 'relationship', 'race', 'gen
 Added features in version 2:
 - Added ```adult.test``` to computation
 - Preprocessing and algorithms for computation in different files<br />
+<br />
 Results:
 - ```Train score: 0.8366```
 - ```Test score: 0.8361```
@@ -20,6 +21,7 @@ Features:
 - One-Hot-Encoding categorial variables
 - Splitting dataset using ```train_test_split()``` function
 - Used features: ```['age', 'workclass', 'education', 'gender', 'hours-per-week', 'occupation', 'income']```
+<br />
 Results:
 - ```Train score: 0.8138```
 - ```Test score: 0.8087```
