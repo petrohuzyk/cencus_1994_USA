@@ -8,8 +8,8 @@ Logistic Regression for predicting.<br />
 Used features: ```['age', 'workclass', 'education', 'relationship', 'race', 'gender', 'hours-per-week', 'occupation', 'native-country', 'marital-status', 'income']```<br /><br />
 Added features in version 2:
 - Added ```adult.test``` to computation
-- Preprocessing and algorithms for computation in different files<br />
-<br />
+- Preprocessing and algorithms for computation in different files<br /><br />
+
 Results:
 - ```Train score: 0.8366```
 - ```Test score: 0.8361```
@@ -20,8 +20,8 @@ We use Logistic Regression to predict. We use data from ```adult.test``` without
 Features:
 - One-Hot-Encoding categorial variables
 - Splitting dataset using ```train_test_split()``` function
-- Used features: ```['age', 'workclass', 'education', 'gender', 'hours-per-week', 'occupation', 'income']```
-<br />
+- Used features: ```['age', 'workclass', 'education', 'gender', 'hours-per-week', 'occupation', 'income']```<br />
+
 Results:
 - ```Train score: 0.8138```
 - ```Test score: 0.8087```
