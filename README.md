@@ -5,14 +5,13 @@ Reference to dataset: [archive.ics.uci.edu](https://archive.ics.uci.edu/ml/datas
 ### Version 2
 Logistic Regression for predicting.<br />
 <br />
-Used features: ```['age', 'workclass', 'education', 'relationship', 'race', 'gender', 'hours-per-week', 'occupation', 'native-country', 'marital-status', 'income']```<br />
+Used features: ```['age', 'workclass', 'education', 'relationship', 'race', 'gender', 'hours-per-week', 'occupation', 'native-country', 'marital-status', 'income']```<br /><br />
 Added features in version 2:
 - Added ```adult.test``` to computation
-- Preprocessing and algorithms for computation in different files
+- Preprocessing and algorithms for computation in different files<br />
 Results:
 - ```Train score: 0.8366```
 - ```Test score: 0.8361```
-<br />
 
 ### Version 1
 We use Logistic Regression to predict. We use data from ```adult.test``` without ```adult.test```<br />
