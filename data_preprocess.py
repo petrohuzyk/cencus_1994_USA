@@ -1,8 +1,12 @@
 import pandas as pd 
 import numpy as np 
 import os
+from sklearn.model_selection import train_test_split
 
 def preprocess():
+    """
+    Reading datasets
+    """
     path = os.path.join(os.getcwd(), r"Representing Data/Cencus_1994_USA/data")
     file1 = "adult.data"
     file2 = "adult.test"
@@ -46,27 +50,49 @@ def preprocess():
     df_train = pd.read_csv(os.path.join(path, file1), names=names, dtype=dtype)
     df_test = pd.read_csv(os.path.join(path, file2), names=names, dtype=dtype)
 
-    data_train = df_train[['age', 'workclass', 'education', 'relationship', 'race', 'gender', 'hours-per-week',
-    'occupation', 'native-country', 'marital-status', 'income']]
-    data_test = df_test[['age', 'workclass', 'education', 'relationship', 'race', 'gender', 'hours-per-week',
-    'occupation', 'native-country', 'marital-status', 'income']]
+    df_test = df_test.replace({'income': (r'>.*', r'<.*')}, {'income': ('>50K', '<=50K')}, regex=True)
 
-    data_test = data_test.replace({'income': (r'>.*', r'<.*')}, {'income': ('>50K', '<=50K')}, regex=True)
+    dataset = df_train.merge(df_test, how='outer')
+    
+    return dataset
 
-    data_dummies_train = pd.get_dummies(data_train)
-    data_dummies_test = pd.get_dummies(data_test)
+def remov_attr_dataset():
+    '''
+    Dataset with removing attributes
+    '''
+    features = ['age', 'workclass', 'education', 'education-num', 'occupation', 'relationship', 'race', 'gender',
+         'capital-gain', 'capital-loss', 'hours-per-week', 'income']
+    dataset = preprocess()
+    dataset = dataset[features]
+    dataset_dummies = pd.get_dummies(dataset)
+    X = dataset_dummies.loc[:, 'age':'gender_ Male']
+    y = dataset_dummies['income_ >50K']
 
-    for col in data_dummies_train.columns:
-        if not col in data_dummies_test.columns:
-            col_loc = data_dummies_train.columns.get_loc(col)
-            data_dummies_test.insert(col_loc, col, 0, allow_duplicates=False)
-            pass
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 
-    features_train = data_dummies_train.loc[:, 'age':'marital-status_ Widowed']
-    features_test = data_dummies_test.loc[:, 'age':'marital-status_ Widowed']
-    X_train = features_train.values
-    y_train = data_dummies_train['income_ >50K'].values
-    X_test = features_test.values
-    y_test = data_dummies_test['income_ >50K'].values
+    return X_train, X_test, y_train, y_test
+
+def binning_dataset():
+    '''
+    Dataset with binning attributes
+    '''
+    dataset_binning = preprocess()
+
+    bins_hours = np.linspace(min(dataset_binning['hours-per-week']), max(dataset_binning['hours-per-week']), 10)
+    group_names = ["Very Low", "Low", "Above Low", "Bellow Avg", "Avg", "Above Avg", "Bellow High", "High", "Above High"]
+    dataset_binning["hours_binned"] = pd.cut(dataset_binning['hours-per-week'], bins_hours, labels=group_names)
+
+    bins_ages = np.linspace(min(dataset_binning['age']), max(dataset_binning['age']), 8)
+    group_names = ["Missing", 'Infant', "Child", 'Teenager', "Young Adult", 'Adult', 'Senior']
+    dataset_binning["ages_binned"] = pd.cut(dataset_binning['age'], bins_ages, labels=group_names)
+
+    features = ['ages_binned', 'workclass', 'education', 'education-num', 'occupation', 'relationship', 'race', 'gender',
+            'capital-gain', 'capital-loss', 'hours_binned', 'income']
+    dataset_binning = dataset_binning[features]
+    dataset_dummies = pd.get_dummies(dataset_binning)
+    X = dataset_dummies.loc[:, 'education-num':'hours_binned_Above High']
+    y = dataset_dummies['income_ >50K']
+
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 
     return X_train, X_test, y_train, y_test
